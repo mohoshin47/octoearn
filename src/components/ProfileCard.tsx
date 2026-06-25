@@ -19,7 +19,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ completed, total }) => {
             <h4 className="text-xl font-bold text-white">
               {user?.first_name} {user?.last_name || 'OctoEarn'}
             </h4>
-            <p className="text-sm text-gray-400">@{user?.username || 'Unknown User'}</p>
+            <p className="text-sm text-gray-400">@{user?.username || 'Unknown User'}{'test ok'}</p>
           </div>
         </div>
 
