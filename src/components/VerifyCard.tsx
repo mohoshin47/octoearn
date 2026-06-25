@@ -1,18 +1,14 @@
-import React from "react";
+import React from 'react';
+import logo from '../assets/hero.png';
 
 interface VerifyCardProps {
   watched: number;
   total: number;
-  status?: "LOCKED" | "UNLOCKED";
+  status?: 'LOCKED' | 'UNLOCKED';
   onVerify?: () => void;
 }
 
-const VerifyCard: React.FC<VerifyCardProps> = ({
-  watched,
-  total,
-  status = "LOCKED",
-  onVerify,
-}) => {
+const VerifyCard: React.FC<VerifyCardProps> = ({ watched, total, status = 'LOCKED', onVerify }) => {
   return (
     <div className="w-full">
       {/* Card container */}
@@ -25,28 +21,24 @@ const VerifyCard: React.FC<VerifyCardProps> = ({
           </div>
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold ${
-              status === "LOCKED"
-                ? "bg-orange-500 text-black"
-                : "bg-green-600 text-white"
+              status === 'LOCKED' ? 'bg-orange-500 text-black' : 'bg-green-600 text-white'
             }`}
           >
-            {status === "LOCKED" ? "PENDING" : "READY"}
+            {status === 'LOCKED' ? 'PENDING' : 'READY'}
           </span>
         </div>
 
         {/* Instruction */}
-        <p className="text-gray-400 text-sm !mb-4">
-          Watch the ad to unlock.
-        </p>
+        <p className="text-gray-400 text-sm !mb-4">Watch the ad to unlock.</p>
 
         {/* Action Button */}
         <button
           onClick={onVerify}
-          disabled={status === "LOCKED"}
+          disabled={status === 'LOCKED'}
           className={`w-full font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition ${
-            status === "LOCKED"
-              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-              : "bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white"
+            status === 'LOCKED'
+              ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white'
           }`}
         >
           ► Verify & Claim
