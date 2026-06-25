@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from '../assets/hero.png';
 
 interface VerifyCardProps {
   watched: number;
