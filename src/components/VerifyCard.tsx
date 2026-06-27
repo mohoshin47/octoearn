@@ -49,7 +49,7 @@ const VerifyCard: React.FC<VerifyCardProps> = ({ watched, total, status = 'LOCKE
           watched: <span className="text-white font-bold">{watched}</span>/
           <span className="text-white font-bold">{total}  </span>
           <div className='mt-4'>
-            <h2 className='!text-white'>V 1.5</h2>
+            <h3 className='!text-white'>V 1.6</h3>
           </div>
         </div>
       </div>

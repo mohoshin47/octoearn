@@ -120,8 +120,8 @@ export default function Task() {
             }}
           />
         </div>
-
-        <Test message={`ok test message ${telegramId} ${taskId}`} />
+{/* 
+        <Test message={`ok test message ${telegramId} ${taskId}`} /> */}
       </div>
     </div>
   );

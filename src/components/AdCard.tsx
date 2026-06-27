@@ -24,7 +24,6 @@ const AdCard: React.FC<AdCardProps> = ({ status = 'PENDING', onAction }) => {
   const handleShowAd = async () => {
     try {
        await showRewardedPopup();
-      // alert('Ad finished ✅ reward granted');
       onAction?.();
     } catch (err) {
       console.error('Ad failed:', err);
