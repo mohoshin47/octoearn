@@ -3,6 +3,7 @@ import ProfileCard from '../components/ProfileCard';
 import ProgressTracker from '../components/ProgressTracker';
 import VerifyCard from '../components/VerifyCard';
 import WarningBox from '../components/WarningBox';
+import Test from '../components/TestCard';
 
 import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
@@ -36,8 +37,13 @@ export default function Task() {
     canVerify,
   });
 
-  const params = new URLSearchParams(window.location.search);
-  const taskId = params.get('taskId');
+  // const params = new URLSearchParams(window.location.search);
+  // const taskId = params.get('taskId');
+
+  const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
+  const taskId = startParam?.replace('task_', '');
+  // console.log(taskId);
+
   // console.log(taskId);
   let telegramId = 0;
   const telegramUser = initData.user();
@@ -63,6 +69,7 @@ export default function Task() {
 
   const handleVerify = async () => {
     try {
+      console.log('telegramid: ' + telegramId + ' taskId: ' + taskId);
       const res = await completeTask(telegramId, taskId!);
 
       if (res.success) {
@@ -113,6 +120,8 @@ export default function Task() {
             }}
           />
         </div>
+
+        <Test message={`ok test message ${telegramId} ${taskId}`} />
       </div>
     </div>
   );
