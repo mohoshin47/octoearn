@@ -9,6 +9,7 @@ import type { Task } from '../types/task';
 import { getGlobalConfig } from '../services/userService';
 import type { GlobalConfig } from '../types/globalConfig';
 import { completeTask } from "../services/userService";
+import { initData } from "@telegram-apps/sdk";
 
 
 export default function Task() {
@@ -40,8 +41,15 @@ if (taskCompleted) {
 
   const params = new URLSearchParams(window.location.search);
   const taskId = params.get('taskId');
-  console.log(taskId);
-  const telegramId = 6249158607;
+  // console.log(taskId);
+  let telegramId = 0;
+  const telegramUser = initData.user();
+  if (telegramUser) {
+  telegramId = telegramUser.id
+  }else{
+    telegramId = 6249158607;
+  }
+
   useEffect(() => {
     loadGlobalConfig();
   }, []);
