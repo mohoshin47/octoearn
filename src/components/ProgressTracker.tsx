@@ -26,7 +26,7 @@ interface ProgressProps {
 
 const ProgressTracker: React.FC<ProgressProps> = ({ currentStep }) => {
   return (
-    <div className="flex items-center justify-center bg-gray-900 p-6 rounded-lg">
+    <div className="flex items-center justify-center bg-gray-900 py-4 rounded-lg border border-[#2A3146] w-full">
       {steps.map((step, index) => (
         <div key={step.label} className="flex items-center">
           <div
