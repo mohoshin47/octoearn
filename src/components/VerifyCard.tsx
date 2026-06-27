@@ -47,7 +47,10 @@ const VerifyCard: React.FC<VerifyCardProps> = ({ watched, total, status = 'LOCKE
         {/* Progress */}
         <div className="mt-4 text-sm text-gray-400">
           watched: <span className="text-white font-bold">{watched}</span>/
-          <span className="text-white font-bold">{total}</span>
+          <span className="text-white font-bold">{total}  </span>
+          <div className='mt-4'>
+            <h2 className='!text-white'>V 1.2</h2>
+          </div>
         </div>
       </div>
     </div>

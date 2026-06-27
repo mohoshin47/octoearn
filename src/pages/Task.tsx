@@ -8,9 +8,8 @@ import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
 import { getGlobalConfig } from '../services/userService';
 import type { GlobalConfig } from '../types/globalConfig';
-import { completeTask } from "../services/userService";
-import { initData } from "@telegram-apps/sdk";
-
+import { completeTask } from '../services/userService';
+import { initData } from '@telegram-apps/sdk';
 
 export default function Task() {
   const [taskCompleted, setTaskCompleted] = useState(false);
@@ -20,24 +19,22 @@ export default function Task() {
   const canVerify = completedAds >= totalAds && totalAds > 0;
   let currentStep = 0;
   // Watch
-if (completedAds < totalAds) {
-  currentStep = 0;
-}
-// Verify
-else if (completedAds >= totalAds) {
-  currentStep = 1;
-}
+  if (completedAds < totalAds) {
+    currentStep = 0;
+  } else if (completedAds >= totalAds) {
+    currentStep = 1;
+  }
 
-// Done (Verify success হলে)
-if (taskCompleted) {
-  currentStep = 2;
-}
+  // Done (Verify success হলে)
+  if (taskCompleted) {
+    currentStep = 2;
+  }
 
   console.log({
-  completedAds,
-  totalAds,
-  canVerify,
-});
+    completedAds,
+    totalAds,
+    canVerify,
+  });
 
   const params = new URLSearchParams(window.location.search);
   const taskId = params.get('taskId');
@@ -45,8 +42,8 @@ if (taskCompleted) {
   let telegramId = 0;
   const telegramUser = initData.user();
   if (telegramUser) {
-  telegramId = telegramUser.id
-  }else{
+    telegramId = telegramUser.id;
+  } else {
     telegramId = 6249158607;
   }
 
@@ -65,24 +62,19 @@ if (taskCompleted) {
   }
 
   const handleVerify = async () => {
-  try {
-    const res = await completeTask(
-      telegramId,
-      taskId!
-    );
+    try {
+      const res = await completeTask(telegramId, taskId!);
 
-    if (res.success) {
-      alert("🎉 Task Completed Successfully!");
+      if (res.success) {
+        alert('🎉 Task Completed Successfully!');
 
-      setTaskCompleted(true);
-      setCompletedAds(0);
+        setTaskCompleted(true);
+        setCompletedAds(0);
+      }
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to complete task');
     }
-  } catch (err: any) {
-    alert(
-      err.response?.data?.message || "Failed to complete task"
-    );
-  }
-};
+  };
 
   // if (loading) {
   //   return <div className="text-white p-5">Loading...</div>;
@@ -117,7 +109,7 @@ if (taskCompleted) {
               if (!canVerify) return;
               setCompletedAds(0);
               setTaskCompleted(true);
-              handleVerify()
+              handleVerify();
             }}
           />
         </div>
