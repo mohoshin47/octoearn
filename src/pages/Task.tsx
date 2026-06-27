@@ -3,7 +3,6 @@ import ProfileCard from '../components/ProfileCard';
 import ProgressTracker from '../components/ProgressTracker';
 import VerifyCard from '../components/VerifyCard';
 import WarningBox from '../components/WarningBox';
-import Test from '../components/TestCard';
 
 import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
