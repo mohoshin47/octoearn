@@ -3,7 +3,6 @@ import ProfileCard from '../components/ProfileCard';
 import ProgressTracker from '../components/ProgressTracker';
 import VerifyCard from '../components/VerifyCard';
 import WarningBox from '../components/WarningBox';
-import TestCard from '../components/TestCard';
 
 import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
@@ -30,13 +29,13 @@ export default function Task() {
 
   const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
   const taskId = startParam?.replace('task_', '');
-        let telegramId = 0;
-        const tg = window.Telegram?.WebApp;
-        if (tg?.initDataUnsafe?.user) {
-          telegramId = tg.initDataUnsafe.user.id;
-        } else {
-          telegramId = 6249158607;
-        }
+  let telegramId = 0;
+  const tg = window.Telegram?.WebApp;
+  if (tg?.initDataUnsafe?.user) {
+    telegramId = tg.initDataUnsafe.user.id;
+  } else {
+    telegramId = 6249158607;
+  }
 
   useEffect(() => {
     loadGlobalConfig();
@@ -51,40 +50,35 @@ export default function Task() {
       console.log(err);
     }
   }
+  const BOT_A_URL = 'https://t.me/' + config?.bot_link + '/app?startapp=refresh';
+  console.log(BOT_A_URL);
 
   const handleVerify = async () => {
     try {
       const res = await completeTask(telegramId, taskId!);
-
-      if (res.success) {
-        setTaskCompleted(true);
-        setCompletedAds(0);
-
-        if (window.Telegram?.WebApp) {
-          window.Telegram.WebApp.showPopup(
+      if (!res.success) return;
+      setTaskCompleted(true);
+      setCompletedAds(0);
+      window.Telegram.WebApp.showPopup(
+        {
+          title: '🎉 Success',
+          message: 'Task completed successfully.',
+          buttons: [
             {
-              title: '🎉 Success',
-              message: 'Task verification completed successfully.',
-              buttons: [
-                {
-                  id: 'ok',
-                  type: 'default',
-                  text: 'OK',
-                },
-              ],
+              id: 'ok',
+              type: 'default',
+              text: 'Back',
             },
-            (buttonId: String) => {
-              if (buttonId === 'ok') {
-                window.Telegram?.WebApp.close();
-              }
-            }
-          );
-        } else {
-          alert('Task verification completed successfully.');
+          ],
+        },
+        (buttonId: string) => {
+          if (buttonId === 'ok') {
+            window.Telegram.WebApp.close();
+          }
         }
-      }
+      );
     } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to complete task');
+      alert(err.response?.data?.message);
     }
   };
 
@@ -97,14 +91,14 @@ export default function Task() {
       <ProfileCard completed={completedAds} total={totalAds} />
 
       <div className="m-4">
-        <WarningBox message={config?.adSettings?.adsAler ?? "".toString()} />
+        <WarningBox message={config?.adSettings?.adsAler ?? ''.toString()} />
         {/* <ProgressCard step={1} /> */}
         <div className="flex  justify-center mt-6 ">
           <ProgressTracker currentStep={currentStep} />
         </div>
         <div className="flex justify-center">
           <AdCard
-            MonetagZoneId= {config?.adSettings?.MonetagZoneId}
+            MonetagZoneId={config?.adSettings?.MonetagZoneId}
             disabled={taskCompleted}
             status={canVerify ? 'COMPLETED' : 'PENDING'}
             onAction={() => {
