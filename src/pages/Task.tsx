@@ -10,13 +10,12 @@ import type { Task } from '../types/task';
 import { getGlobalConfig } from '../services/userService';
 import type { GlobalConfig } from '../types/globalConfig';
 import { completeTask } from '../services/userService';
-import { initData } from '@telegram-apps/sdk';
 
 export default function Task() {
   const [taskCompleted, setTaskCompleted] = useState(false);
   const [config, setConfig] = useState<GlobalConfig | null>(null);
   const [completedAds, setCompletedAds] = useState(0);
-  const totalAds = config?.adsPerSession ?? 0;
+  const totalAds = config?.adSettings.adsPerSession ?? 0;
   const canVerify = completedAds >= totalAds && totalAds > 0;
   let currentStep = 0;
   // Watch
@@ -25,28 +24,12 @@ export default function Task() {
   } else if (completedAds >= totalAds) {
     currentStep = 1;
   }
-
-  // Done (Verify success হলে)
   if (taskCompleted) {
     currentStep = 2;
   }
 
-  // const params = new URLSearchParams(window.location.search);
-  // const taskId = params.get('taskId');
-
   const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
   const taskId = startParam?.replace('task_', '');
-  // console.log(taskId);
-
-  // console.log(taskId);
-  // let telegramId = 0;
-  // const telegramUser = initData.user();
-  // if (telegramUser) {
-  //   telegramId = telegramUser.id;
-  // } else {
-  //   telegramId = 6249158607;
-  // }
-
         let telegramId = 0;
         const tg = window.Telegram?.WebApp;
         if (tg?.initDataUnsafe?.user) {
@@ -114,13 +97,14 @@ export default function Task() {
       <ProfileCard completed={completedAds} total={totalAds} />
 
       <div className="m-4">
-        <WarningBox message="Watch the ad fully and interact. You must tap/click the ad button or action window. Pure views without a click are rejected." />
+        <WarningBox message={config?.adSettings?.adsAler ?? "".toString()} />
         {/* <ProgressCard step={1} /> */}
         <div className="flex  justify-center mt-6 ">
           <ProgressTracker currentStep={currentStep} />
         </div>
         <div className="flex justify-center">
           <AdCard
+            MonetagZoneId= {config?.adSettings?.MonetagZoneId}
             disabled={taskCompleted}
             status={canVerify ? 'COMPLETED' : 'PENDING'}
             onAction={() => {
@@ -143,10 +127,10 @@ export default function Task() {
             }}
           />
         </div>
-        <TestCard
+        {/* <TestCard
           message={`Telegram ID: ${telegramId}
 Task ID: ${taskId}`}
-        />
+        /> */}
       </div>
     </div>
   );

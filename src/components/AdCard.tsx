@@ -1,15 +1,15 @@
 import createAdHandler from 'monetag-tg-sdk';
-// তোমার Monetag dashboard থেকে পাওয়া Zone ID বসাও
-const showRewardedPopup = createAdHandler(11201566);
 import React from 'react';
 
 interface AdCardProps {
+  MonetagZoneId?: string;
   disabled?: boolean;
   status?: 'PENDING' | 'COMPLETED';
   onAction?: () => void;
 }
 
-const AdCard: React.FC<AdCardProps> = ({ disabled = false, status = 'PENDING', onAction }) => {
+const AdCard: React.FC<AdCardProps> = ({ MonetagZoneId = '00', disabled = false, status = 'PENDING', onAction }) => {
+
   // useEffect(() => {
   //   const showOnLoad = async () => {
   //     try {
@@ -22,9 +22,12 @@ const AdCard: React.FC<AdCardProps> = ({ disabled = false, status = 'PENDING', o
   //   // showOnLoad();
   // }, []);
 
+  console.log('zoneId: ' + MonetagZoneId);
+
   const handleShowAd = async () => {
     if (disabled) return;
     try {
+      const showRewardedPopup = createAdHandler(Number(MonetagZoneId));
       await showRewardedPopup();
       onAction?.();
     } catch (err) {

@@ -18,8 +18,12 @@ export interface GlobalConfig {
   createdAt: string;
 
   min_withdraw: number;
+  adSettings: AdSettings;
+}
 
+export interface AdSettings {
   adsPerSession: number;
-
   rewardPerSession: number;
+  adsAler:string;
+  MonetagZoneId:string;
 }
