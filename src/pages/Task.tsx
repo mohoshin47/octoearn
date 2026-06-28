@@ -50,8 +50,6 @@ export default function Task() {
       console.log(err);
     }
   }
-  const BOT_A_URL = 'https://t.me/' + config?.bot_link + '/app?startapp=refresh';
-  console.log(BOT_A_URL);
 
   const handleVerify = async () => {
     try {
@@ -79,6 +77,7 @@ export default function Task() {
       );
     } catch (err: any) {
       alert(err.response?.data?.message);
+      window.Telegram.WebApp.close();
     }
   };
 

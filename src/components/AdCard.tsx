@@ -22,8 +22,6 @@ const AdCard: React.FC<AdCardProps> = ({ MonetagZoneId = '00', disabled = false,
   //   // showOnLoad();
   // }, []);
 
-  console.log('zoneId: ' + MonetagZoneId);
-
   const handleShowAd = async () => {
     if (disabled) return;
     try {
