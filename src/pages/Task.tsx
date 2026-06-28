@@ -3,6 +3,7 @@ import ProfileCard from '../components/ProfileCard';
 import ProgressTracker from '../components/ProgressTracker';
 import VerifyCard from '../components/VerifyCard';
 import WarningBox from '../components/WarningBox';
+import TestCard from '../components/TestCard';
 
 import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
@@ -61,40 +62,40 @@ export default function Task() {
   }
 
   const handleVerify = async () => {
-  try {
-    const res = await completeTask(telegramId, taskId!);
+    try {
+      const res = await completeTask(telegramId, taskId!);
 
-    if (res.success) {
-      setTaskCompleted(true);
-      setCompletedAds(0);
+      if (res.success) {
+        setTaskCompleted(true);
+        setCompletedAds(0);
 
-      if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.showPopup(
-          {
-            title: "🎉 Success",
-            message: "Task verification completed successfully.",
-            buttons: [
-              {
-                id: "ok",
-                type: "default",
-                text: "OK",
-              },
-            ],
-          },
-          (buttonId:String) => {
-            if (buttonId === "ok") {
-              window.Telegram?.WebApp.close();
+        if (window.Telegram?.WebApp) {
+          window.Telegram.WebApp.showPopup(
+            {
+              title: '🎉 Success',
+              message: 'Task verification completed successfully.',
+              buttons: [
+                {
+                  id: 'ok',
+                  type: 'default',
+                  text: 'OK',
+                },
+              ],
+            },
+            (buttonId: String) => {
+              if (buttonId === 'ok') {
+                window.Telegram?.WebApp.close();
+              }
             }
-          }
-        );
-      } else {
-        alert("Task verification completed successfully.");
+          );
+        } else {
+          alert('Task verification completed successfully.');
+        }
       }
+    } catch (err: any) {
+      alert(err.response?.data?.message || 'Failed to complete task');
     }
-  } catch (err: any) {
-    alert(err.response?.data?.message || "Failed to complete task");
-  }
-};
+  };
 
   // if (loading) {
   //   return <div className="text-white p-5">Loading...</div>;
@@ -134,6 +135,10 @@ export default function Task() {
             }}
           />
         </div>
+        <TestCard
+          message={`Telegram ID: ${telegramId}
+Task ID: ${taskId}`}
+        />
       </div>
     </div>
   );
