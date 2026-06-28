@@ -39,13 +39,21 @@ export default function Task() {
   // console.log(taskId);
 
   // console.log(taskId);
-  let telegramId = 0;
-  const telegramUser = initData.user();
-  if (telegramUser) {
-    telegramId = telegramUser.id;
-  } else {
-    telegramId = 6249158607;
-  }
+  // let telegramId = 0;
+  // const telegramUser = initData.user();
+  // if (telegramUser) {
+  //   telegramId = telegramUser.id;
+  // } else {
+  //   telegramId = 6249158607;
+  // }
+
+        let telegramId = 0;
+        const tg = window.Telegram?.WebApp;
+        if (tg?.initDataUnsafe?.user) {
+          telegramId = tg.initDataUnsafe.user.id;
+        } else {
+          telegramId = 6249158607;
+        }
 
   useEffect(() => {
     loadGlobalConfig();
