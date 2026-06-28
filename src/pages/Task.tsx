@@ -30,12 +30,6 @@ export default function Task() {
     currentStep = 2;
   }
 
-  console.log({
-    completedAds,
-    totalAds,
-    canVerify,
-  });
-
   // const params = new URLSearchParams(window.location.search);
   // const taskId = params.get('taskId');
 
@@ -67,20 +61,40 @@ export default function Task() {
   }
 
   const handleVerify = async () => {
-    try {
-      console.log('telegramid: ' + telegramId + ' taskId: ' + taskId);
-      const res = await completeTask(telegramId, taskId!);
+  try {
+    const res = await completeTask(telegramId, taskId!);
 
-      if (res.success) {
-        alert('🎉 Task Completed Successfully!');
+    if (res.success) {
+      setTaskCompleted(true);
+      setCompletedAds(0);
 
-        setTaskCompleted(true);
-        setCompletedAds(0);
+      if (window.Telegram?.WebApp) {
+        window.Telegram.WebApp.showPopup(
+          {
+            title: "🎉 Success",
+            message: "Task verification completed successfully.",
+            buttons: [
+              {
+                id: "ok",
+                type: "default",
+                text: "OK",
+              },
+            ],
+          },
+          (buttonId:String) => {
+            if (buttonId === "ok") {
+              window.Telegram?.WebApp.close();
+            }
+          }
+        );
+      } else {
+        alert("Task verification completed successfully.");
       }
-    } catch (err: any) {
-      alert(err.response?.data?.message || 'Failed to complete task');
     }
-  };
+  } catch (err: any) {
+    alert(err.response?.data?.message || "Failed to complete task");
+  }
+};
 
   // if (loading) {
   //   return <div className="text-white p-5">Loading...</div>;
@@ -98,6 +112,7 @@ export default function Task() {
         </div>
         <div className="flex justify-center">
           <AdCard
+            disabled={taskCompleted}
             status={canVerify ? 'COMPLETED' : 'PENDING'}
             onAction={() => {
               setCompletedAds((prev) => prev + 1);
@@ -119,8 +134,6 @@ export default function Task() {
             }}
           />
         </div>
-{/* 
-        <Test message={`ok test message ${telegramId} ${taskId}`} /> */}
       </div>
     </div>
   );

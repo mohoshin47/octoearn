@@ -4,11 +4,12 @@ const showRewardedPopup = createAdHandler(11201566);
 import React from 'react';
 
 interface AdCardProps {
+  disabled?: boolean;
   status?: 'PENDING' | 'COMPLETED';
   onAction?: () => void;
 }
 
-const AdCard: React.FC<AdCardProps> = ({ status = 'PENDING', onAction }) => {
+const AdCard: React.FC<AdCardProps> = ({ disabled = false, status = 'PENDING', onAction }) => {
   // useEffect(() => {
   //   const showOnLoad = async () => {
   //     try {
@@ -22,8 +23,9 @@ const AdCard: React.FC<AdCardProps> = ({ status = 'PENDING', onAction }) => {
   // }, []);
 
   const handleShowAd = async () => {
+    if (disabled) return;
     try {
-       await showRewardedPopup();
+      await showRewardedPopup();
       onAction?.();
     } catch (err) {
       console.error('Ad failed:', err);
@@ -58,9 +60,15 @@ const AdCard: React.FC<AdCardProps> = ({ status = 'PENDING', onAction }) => {
         {/* Action Butts===abchefghi n */}
         <button
           onClick={handleShowAd}
-          className="mt-3 w-full bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-2 transition"
+          disabled={disabled}
+          className={`mt-3 w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition
+  ${
+    disabled
+      ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+      : 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white'
+  }`}
         >
-          ► Watch & Click Ad
+          {disabled ? '✔ Task Completed' : '► Watch & Click Ad'}
         </button>
       </div>
     </div>
