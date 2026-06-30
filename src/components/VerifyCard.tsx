@@ -12,12 +12,13 @@ const VerifyCard: React.FC<VerifyCardProps> = ({ watched, total, status = 'LOCKE
   return (
     <div className="w-full mt-4">
       {/* Card container */}
-      <div className="bg-gray-900 text-white rounded-lg p-6 shadow-lg mx-auto border border-[#2A3146]">
+      <div className="bg-gray-900 text-white rounded-lg p-4 shadow-lg mx-auto border border-[#2A3146]">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">🔒</span>
             <span className="font-semibold">Verify & Claim</span>
+           
           </div>
           <span
             className={`px-3 py-1 rounded-full text-xs font-bold ${
@@ -45,12 +46,9 @@ const VerifyCard: React.FC<VerifyCardProps> = ({ watched, total, status = 'LOCKE
         </button>
 
         {/* Progress */}
-        <div className="mt-4 text-sm text-gray-400">
+        <div className="mt-4 text-sm text-gray-400 text-center">
           watched: <span className="text-white font-bold">{watched}</span>/
           <span className="text-white font-bold">{total}  </span>
-          <div className='mt-4'>
-            <h3 className='!text-white'>V 1.6</h3>
-          </div>
         </div>
       </div>
     </div>

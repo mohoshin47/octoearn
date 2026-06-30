@@ -1,33 +1,37 @@
-import createAdHandler from 'monetag-tg-sdk';
 import React from 'react';
+import { useEffect } from 'react';
+import { showRewardedPopup } from '../utils/monetagAds';
 
 interface AdCardProps {
+  telegramId?: Number;
   MonetagZoneId?: string;
   disabled?: boolean;
   status?: 'PENDING' | 'COMPLETED';
   onAction?: () => void;
+  firstadsshow?: boolean;
 }
 
-const AdCard: React.FC<AdCardProps> = ({ MonetagZoneId = '00', disabled = false, status = 'PENDING', onAction }) => {
-
-  // useEffect(() => {
-  //   const showOnLoad = async () => {
-  //     try {
-  //       await showRewardedPopup();
-  //       console.log('Ad shown on page load ✅ (no reward)');
-  //     } catch (err) {
-  //       console.error('Ad failed ❌', err);
-  //     }
-  //   };
-  //   // showOnLoad();
-  // }, []);
+const AdCard: React.FC<AdCardProps> = ({
+  telegramId = 0,
+  MonetagZoneId = '00',
+  disabled = false,
+  status = 'PENDING',
+  onAction,
+  firstadsshow,
+}) => {
+  useEffect(() => {
+    if (firstadsshow) {
+      //  showRewardedInterstitial(MonetagZoneId);
+    }
+  }, []);
 
   const handleShowAd = async () => {
     if (disabled) return;
     try {
-      const showRewardedPopup = createAdHandler(Number(MonetagZoneId));
-      await showRewardedPopup();
-      onAction?.();
+      const success = await showRewardedPopup(MonetagZoneId, telegramId.toString());
+      if (success) {
+        onAction?.();
+      }
     } catch (err) {
       console.error('Ad failed:', err);
       alert('Ad not available ❌');
@@ -37,7 +41,7 @@ const AdCard: React.FC<AdCardProps> = ({ MonetagZoneId = '00', disabled = false,
   return (
     <div className="w-full flex justify-center mt-4 border border-[#2A3146] rounded-lg">
       {/* Card container */}
-      <div className="bg-gray-900 text-white rounded-lg p-6 w-full shadow-lg">
+      <div className="bg-gray-900 text-white rounded-lg p-4 w-full shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">

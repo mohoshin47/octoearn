@@ -26,4 +26,5 @@ export interface AdSettings {
   rewardPerSession: number;
   adsAler:string;
   MonetagZoneId:string;
+  firstadsshow:boolean;
 }

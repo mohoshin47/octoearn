@@ -97,12 +97,14 @@ export default function Task() {
         </div>
         <div className="flex justify-center">
           <AdCard
+            telegramId ={telegramId}
             MonetagZoneId={config?.adSettings?.MonetagZoneId}
             disabled={taskCompleted}
             status={canVerify ? 'COMPLETED' : 'PENDING'}
             onAction={() => {
               setCompletedAds((prev) => prev + 1);
             }}
+            firstadsshow ={config?.adSettings?.firstadsshow}
           />
         </div>
 

@@ -13,12 +13,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ completed, total }) => {
     <div className="w-full">
       <div className="flex items-center justify-between bg-gray-900 rounded-lg p-4 shadow-lg mx-auto">
         {/* Left side: Logo + Info */}
-        <div className="flex items-center gap-4">
-          <img src={logo} alt="logo" className="h-14 w-14 rounded-2xl object-cover" />
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="logo" className="h-12 w-12 rounded-2xl object-cover" />
           <div className="flex flex-col items-start justify-start">
-            <h4 className="text-xl font-bold text-white">
+            <h3 className="text-xl font-bold text-white">
               {user?.first_name} {user?.last_name || 'OctoEarn'}
-            </h4>
+            </h3>
             <p className="text-sm text-gray-400">@{user?.username || 'Unknown User'}</p>
           </div>
         </div>
