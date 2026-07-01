@@ -22,3 +22,8 @@ export const completeTask = async (telegramId: number, taskId: string) => {
 
   return data;
 };
+
+export async function verifyAdClick(telegramId: number) {
+  const { data } = await axios.get(`${API}/api/task/verify-ad-click/${telegramId}`);
+  return data;
+}

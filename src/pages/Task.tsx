@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import type { Task } from '../types/task';
 import { getGlobalConfig } from '../services/userService';
 import type { GlobalConfig } from '../types/globalConfig';
-import { completeTask } from '../services/userService';
+import { completeTask, verifyAdClick } from '../services/userService';
 
 export default function Task() {
   const [taskCompleted, setTaskCompleted] = useState(false);
@@ -53,10 +53,36 @@ export default function Task() {
 
   const handleVerify = async () => {
     try {
+      // Step 1: Verify Ad Click
+      const verify = await verifyAdClick(telegramId);
+
+      if (!verify.verified) {
+        window.Telegram.WebApp.showPopup(
+          {
+            title: '❌ Verification Failed',
+            message: verify.message || 'Please click the ad first.',
+            buttons: [
+              {
+                id: 'ok',
+                type: 'default',
+                text: 'OK',
+              },
+            ],
+          },
+          () => {}
+        );
+
+        return;
+      }
+
+      // Step 2: Complete Task
       const res = await completeTask(telegramId, taskId!);
+
       if (!res.success) return;
+
       setTaskCompleted(true);
       setCompletedAds(0);
+
       window.Telegram.WebApp.showPopup(
         {
           title: '🎉 Success',
@@ -76,8 +102,17 @@ export default function Task() {
         }
       );
     } catch (err: any) {
-      alert(err.response?.data?.message);
-      window.Telegram.WebApp.close();
+      window.Telegram.WebApp.showPopup({
+        title: '❌ Error',
+        message: err.response?.data?.message || 'Verification failed.',
+        buttons: [
+          {
+            id: 'ok',
+            type: 'default',
+            text: 'OK',
+          },
+        ],
+      });
     }
   };
 
@@ -92,19 +127,19 @@ export default function Task() {
       <div className="m-4">
         <WarningBox message={config?.adSettings?.adsAler ?? ''.toString()} />
         {/* <ProgressCard step={1} /> */}
-        <div className="flex  justify-center mt-6 ">
+        <div className="flex  justify-center mt-4 ">
           <ProgressTracker currentStep={currentStep} />
         </div>
         <div className="flex justify-center">
           <AdCard
-            telegramId ={telegramId}
+            telegramId={telegramId}
             MonetagZoneId={config?.adSettings?.MonetagZoneId}
             disabled={taskCompleted}
             status={canVerify ? 'COMPLETED' : 'PENDING'}
             onAction={() => {
               setCompletedAds((prev) => prev + 1);
             }}
-            firstadsshow ={config?.adSettings?.firstadsshow}
+            firstadsshow={config?.adSettings?.firstadsshow}
           />
         </div>
 
