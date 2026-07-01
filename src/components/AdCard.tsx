@@ -25,6 +25,7 @@ const AdCard: React.FC<AdCardProps> = ({
     }
   }, []);
 
+
   const handleShowAd = async () => {
     if (disabled) return;
     try {
