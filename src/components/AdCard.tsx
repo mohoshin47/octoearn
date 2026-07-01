@@ -1,6 +1,6 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { showRewardedPopup } from '../utils/monetagAds';
+import { useEffect, useState } from 'react';
 
 interface AdCardProps {
   telegramId?: Number;
@@ -19,23 +19,41 @@ const AdCard: React.FC<AdCardProps> = ({
   onAction,
   firstadsshow,
 }) => {
-  useEffect(() => {
-    if (firstadsshow) {
-      //  showRewardedInterstitial(MonetagZoneId);
-    }
-  }, []);
+  const [loadingAd, setLoadingAd] = useState(false);
+  const [countdown, setCountdown] = useState(0);
 
+  useEffect(() => {
+    console.log('firsadshow' + '' + firstadsshow);
+    if (!loadingAd) return;
+    const interval = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          setLoadingAd(false);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [loadingAd]);
 
   const handleShowAd = async () => {
-    if (disabled) return;
+    if (disabled || loadingAd) return;
+
+    // Countdown Start
+    setLoadingAd(true);
+    setCountdown(30);
+
     try {
       const success = await showRewardedPopup(MonetagZoneId, telegramId.toString());
+
       if (success) {
         onAction?.();
       }
     } catch (err) {
       console.error('Ad failed:', err);
-      alert('Ad not available ❌');
     }
   };
 
@@ -66,15 +84,14 @@ const AdCard: React.FC<AdCardProps> = ({
         {/* Action Butts===abchefghi n */}
         <button
           onClick={handleShowAd}
-          disabled={disabled}
-          className={`mt-3 w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition
-  ${
-    disabled
-      ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
-      : 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-500 hover:to-purple-700 text-white'
-  }`}
+          disabled={disabled || loadingAd}
+          className={`mt-3 w-full py-3 rounded-lg flex items-center justify-center gap-2 font-semibold transition ${
+            disabled || loadingAd
+              ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              : 'bg-gradient-to-r from-purple-600 to-purple-800 text-white'
+          }`}
         >
-          {disabled ? '✔ Task Completed' : '► Watch & Click Ad'}
+          {loadingAd ? `⏳ Wait ${countdown}s` : '▶ Watch & Click Ad'}
         </button>
       </div>
     </div>
