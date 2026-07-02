@@ -1,6 +1,7 @@
 import React from 'react';
 import { showRewardedPopup } from '../utils/monetagAds';
 import { useEffect, useState } from 'react';
+import { showAdsgramReward } from "../utils/adsgram";
 
 interface AdCardProps {
   telegramId?: Number;
@@ -23,7 +24,7 @@ const AdCard: React.FC<AdCardProps> = ({
   const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
-    console.log('firsadshow' + '' + firstadsshow);
+    // console.log('firsadshow' + '' + firstadsshow);
     if (!loadingAd) return;
     const interval = setInterval(() => {
       setCountdown((prev) => {
@@ -46,15 +47,26 @@ const AdCard: React.FC<AdCardProps> = ({
     setLoadingAd(true);
     setCountdown(30);
 
-    try {
+    if(!firstadsshow){
+      try {
       const success = await showRewardedPopup(MonetagZoneId, telegramId.toString());
-
       if (success) {
         onAction?.();
       }
     } catch (err) {
       console.error('Ad failed:', err);
     }
+    }
+
+    if (firstadsshow) {
+       const success = await showAdsgramReward();
+    if(success){
+        console.log("User watched Ads");
+    }else{
+        console.log("Ads Failed");
+    }
+    }
+
   };
 
   return (
